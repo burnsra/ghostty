@@ -935,12 +935,11 @@ class AppDelegate: NSObject,
         // make it immutable, so Swift 6 won't complain
         let newIcon = appIcon
 
-        let appPath = Bundle.main.bundlePath
-        NSWorkspace.shared.setIcon(newIcon, forFile: appPath, options: [])
-        NSWorkspace.shared.noteFileSystemChanged(appPath)
-
         await MainActor.run {
             self.appIcon = newIcon
+            let appPath = Bundle.main.bundlePath
+            NSWorkspace.shared.setIcon(newIcon, forFile: appPath, options: [])
+            NSWorkspace.shared.noteFileSystemChanged(appPath)
 #if DEBUG
             // if no custom icon specified, we use blueprint to distinguish from release app
             NSApplication.shared.applicationIconImage = newIcon ?? NSImage(named: "BlueprintImage")
